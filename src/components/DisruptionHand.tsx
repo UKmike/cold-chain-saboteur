@@ -41,26 +41,26 @@ export function DisruptionHand({
   const armedCard = DISRUPTION_CARDS.find((c) => c.id === selectedCard) ?? null;
 
   return (
-    <section className="border-t border-slate-800/90 bg-[#0b1526]/95 px-4 py-2.5 backdrop-blur-md">
+    <section className="relative shrink-0 border-t border-slate-800/90 bg-[#0b1526]/95 px-3 py-2 backdrop-blur-md">
       {armedCard && (
-        <div className="mb-2 flex items-center justify-between rounded-lg bg-cyan-500/15 px-3 py-1.5 text-xs text-cyan-200 ring-1 ring-cyan-400/40">
+        <div className="absolute -top-9 left-1/2 z-30 flex -translate-x-1/2 items-center gap-3 rounded-full bg-slate-900/95 px-4 py-1 text-xs text-cyan-200 shadow-lg ring-1 ring-cyan-400/50 backdrop-blur">
           <span>
             <strong className="uppercase tracking-wide text-cyan-300">
-              {armedCard.name} Armed:
+              {armedCard.name}:
             </strong>{' '}
             {TARGET_HINTS[armedCard.targetType]}
           </span>
           <button
             onClick={() => onSelectCard(null)}
-            className="flex items-center gap-1 rounded px-1.5 py-0.5 text-slate-300 hover:bg-slate-800 hover:text-white"
+            className="flex items-center gap-1 rounded-full bg-slate-800 px-2 py-0.5 text-[11px] text-slate-200 hover:bg-slate-700"
           >
-            <X className="h-3.5 w-3.5" />
+            <X className="h-3 w-3" />
             Cancel
           </button>
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-6 gap-2">
         {DISRUPTION_CARDS.map((card) => {
           const Icon = CARD_ICONS[card.id];
           const cooldown = state.cardCooldowns[card.id] ?? 0;

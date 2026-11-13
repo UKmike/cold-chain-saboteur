@@ -38,18 +38,17 @@ export function TopHud({
         : 'text-rose-400';
 
   return (
-    <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/90 bg-[#0b1526]/95 px-4 py-2.5 backdrop-blur-md">
+    <header className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-800/90 bg-[#0b1526]/95 px-3 py-1.5 backdrop-blur-md">
       {/* Brand + View Switcher */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/15 ring-1 ring-cyan-400/30">
-            <Anchor className="h-4 w-4 text-cyan-400" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-500/15 ring-1 ring-cyan-400/30">
+            <Anchor className="h-3.5 w-3.5 text-cyan-400" />
           </div>
-          <div>
-            <h1 className="text-sm font-bold tracking-wide text-slate-100 uppercase">
+          <div className="hidden xl:block">
+            <h1 className="text-xs font-bold tracking-wide text-slate-100 uppercase">
               ColdChain Saboteur
             </h1>
-            <p className="text-[11px] text-slate-400">Seafood Supply-Chain Disruption</p>
           </div>
         </div>
 

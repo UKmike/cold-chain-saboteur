@@ -64,7 +64,7 @@ export function App() {
   };
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-[#070f1c] text-slate-100">
+    <div className="flex h-dvh w-screen flex-col overflow-hidden bg-[#070f1c] text-slate-100">
       <TopHud
         state={state}
         activeView={activeView}
@@ -73,8 +73,8 @@ export function App() {
         onReset={handleReset}
       />
 
-      <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 p-3 lg:grid-cols-12">
-        <div className="min-h-0 lg:col-span-9">
+      <main className="grid min-h-0 flex-1 grid-cols-12 gap-2.5 p-2.5">
+        <div className="col-span-9 min-h-0">
           {activeView === 'map' ? (
             <WorldMap
               state={state}
@@ -90,7 +90,7 @@ export function App() {
           )}
         </div>
 
-        <div className="min-h-0 lg:col-span-3">
+        <div className="col-span-3 min-h-0">
           <EventFeed logs={state.logs} activeDisruptions={state.activeDisruptions} />
         </div>
       </main>

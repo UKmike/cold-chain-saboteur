@@ -18,17 +18,17 @@ export function BufferPipelinePanel({
   const isTargetable = (t: TargetType) => armedCard?.targetType === t;
 
   return (
-    <div className="grid h-full grid-cols-1 gap-4 overflow-y-auto lg:grid-cols-3">
+    <div className="grid h-full min-h-0 grid-cols-3 gap-2.5 overflow-hidden">
       {/* Column 1: Buffer Storage Tanks */}
-      <div className="flex flex-col rounded-xl border border-slate-800/90 bg-[#0b1526]/90 p-3.5">
-        <div className="mb-3 flex items-center justify-between border-b border-slate-800 pb-2">
-          <h2 className="text-xs font-bold tracking-wider text-slate-200 uppercase">
+      <div className="flex min-h-0 flex-col rounded-xl border border-slate-800/90 bg-[#0b1526]/90 p-2.5">
+        <div className="mb-2 flex items-center justify-between border-b border-slate-800 pb-1.5">
+          <h2 className="text-[11px] font-bold tracking-wider text-slate-200 uppercase">
             Buffer Storage
           </h2>
-          <span className="text-[11px] text-slate-400">Cold-Room Inventory</span>
+          <span className="text-[10px] text-slate-400">Cold-Room</span>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex min-h-0 flex-1 flex-col justify-between gap-2 overflow-y-auto">
           {(Object.values(state.buffers) as GameState['buffers'][SpeciesId][]).map((tank) => {
             const pct = Math.round((tank.currentTons / tank.maxTons) * 100);
             const isStockout = tank.currentTons <= 0.1;
