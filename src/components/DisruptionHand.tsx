@@ -41,9 +41,9 @@ export function DisruptionHand({
   const armedCard = DISRUPTION_CARDS.find((c) => c.id === selectedCard) ?? null;
 
   return (
-    <section className="relative shrink-0 border-t border-slate-800/90 bg-[#0b1526]/95 px-2 py-1.5 backdrop-blur-md sm:px-3 sm:py-2">
+    <section className="pointer-events-none fixed inset-x-0 bottom-0 z-20 px-2 pb-2 sm:px-3 sm:pb-3">
       {armedCard && (
-        <div className="absolute -top-10 left-1/2 z-30 flex w-max max-w-[94vw] -translate-x-1/2 items-center gap-2 rounded-full bg-slate-900/95 px-3 py-1.5 text-xs text-cyan-200 shadow-lg ring-1 ring-cyan-400/50 backdrop-blur">
+        <div className="pointer-events-auto mx-auto mb-2 flex w-max max-w-[94vw] items-center gap-2 rounded-full border border-cyan-400/50 bg-slate-950/90 px-3 py-1 text-xs text-cyan-200 shadow-lg backdrop-blur-md">
           <span className="truncate">
             <strong className="uppercase tracking-wide text-cyan-300">
               {armedCard.name}:
@@ -52,7 +52,7 @@ export function DisruptionHand({
           </span>
           <button
             onClick={() => onSelectCard(null)}
-            className="flex min-h-[28px] shrink-0 items-center gap-1 rounded-full bg-slate-800 px-2.5 py-0.5 text-[11px] font-semibold text-slate-100 active:bg-slate-700 touch-manipulation"
+            className="flex min-h-[26px] shrink-0 items-center gap-1 rounded-full bg-slate-800 px-2.5 py-0.5 text-[11px] font-semibold text-slate-100 active:bg-slate-700 touch-manipulation"
           >
             <X className="h-3.5 w-3.5" />
             Cancel
@@ -60,7 +60,7 @@ export function DisruptionHand({
         </div>
       )}
 
-      <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto pb-0.5 md:grid md:grid-cols-6 md:overflow-visible md:pb-0">
+      <div className="pointer-events-auto mx-auto flex max-w-5xl snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 md:grid md:grid-cols-6 md:gap-2 md:overflow-visible md:pb-0">
         {DISRUPTION_CARDS.map((card) => {
           const Icon = CARD_ICONS[card.id];
           const cooldown = state.cardCooldowns[card.id] ?? 0;
@@ -73,12 +73,12 @@ export function DisruptionHand({
               key={card.id}
               disabled={isDisabled}
               onClick={() => onSelectCard(isSelected ? null : card.id)}
-              className={`group relative flex min-w-[116px] shrink-0 snap-start flex-col justify-between rounded-xl border p-2 text-left transition-all touch-manipulation md:min-w-0 ${
+              className={`group relative flex min-w-[110px] shrink-0 snap-start flex-col justify-between rounded-xl border p-2 text-left backdrop-blur-md transition-all touch-manipulation md:min-w-0 ${
                 isSelected
-                  ? 'border-cyan-400 bg-slate-800/95 shadow-lg shadow-cyan-500/20 ring-1 ring-cyan-400/50'
+                  ? 'border-cyan-400 bg-slate-900/90 shadow-lg shadow-cyan-500/20 ring-1 ring-cyan-400/50'
                   : isDisabled
-                    ? 'cursor-not-allowed border-slate-800 bg-slate-900/50 opacity-50'
-                    : 'border-slate-700/80 bg-slate-900/90 active:scale-95 hover:border-slate-500 hover:bg-slate-800/90'
+                    ? 'cursor-not-allowed border-slate-800/70 bg-slate-950/55 opacity-50'
+                    : 'border-slate-700/70 bg-slate-950/75 active:scale-95 hover:border-slate-500 hover:bg-slate-900/85'
               }`}
             >
               <div className="flex items-start justify-between gap-1.5">

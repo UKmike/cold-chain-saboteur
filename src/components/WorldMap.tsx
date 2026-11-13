@@ -35,7 +35,7 @@ export function WorldMap({ state, selectedCard, onTargetClick }: WorldMapProps) 
   const isTargetable = (type: TargetType) => armedCard?.targetType === type;
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-xl border border-slate-800/90 bg-[#071120] shadow-inner">
+    <div className="relative h-full w-full overflow-hidden bg-[#071120]">
       <svg
         viewBox="0 0 1000 450"
         className="h-full w-full select-none"
@@ -325,19 +325,6 @@ export function WorldMap({ state, selectedCard, onTargetClick }: WorldMapProps) 
           );
         })}
       </svg>
-
-      {/* Map Legend */}
-      <div className="pointer-events-none absolute bottom-3 left-3 flex flex-wrap gap-3 rounded-lg bg-slate-950/80 px-3 py-1.5 text-[11px] text-slate-300 ring-1 ring-slate-800">
-        <span className="flex items-center gap-1.5">
-          <span className="h-2 w-4 rounded-full bg-cyan-400" /> Sea Freight
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="h-2 w-4 rounded-full bg-amber-400" /> Air Cargo
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="h-2 w-4 rounded-full bg-emerald-400" /> Buyer Supply
-        </span>
-      </div>
     </div>
   );
 }

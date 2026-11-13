@@ -1,10 +1,7 @@
 import {
   Activity,
-  Anchor,
   Bell,
-  FastForward,
   Layers,
-  Map as MapIcon,
   Pause,
   Play,
   RotateCcw,
@@ -13,26 +10,30 @@ import {
 import { getAggregateBufferPercent } from '../engine/simulation';
 import { GameState } from '../engine/types';
 
-export type ActiveView = 'map' | 'pipeline' | 'feed';
+export type OverlayDrawer = 'none' | 'pipeline' | 'feed';
 
 interface TopHudProps {
   state: GameState;
-  activeView: ActiveView;
-  onChangeView: (view: ActiveView) => void;
+  activeDrawer: OverlayDrawer;
+  onToggleDrawer: (drawer: OverlayDrawer) => void;
   onSetSpeed: (speed: 0 | 1 | 2 | 3) => void;
   onReset: () => void;
 }
 
 export function TopHud({
   state,
-  activeView,
-  onChangeView,
+  activeDrawer,
+  onToggleDrawer,
   onSetSpeed,
   onReset,
 }: TopHudProps) {
   const bufferPct = getAggregateBufferPercent(state);
-  const bufferBarColor =
-    bufferPct >= 55 ? 'bg-emerald-400' : bufferPct >= 28 ? 'bg-amber-400' : 'bg-rose-500';
+  const bufferTextColor =
+    bufferPct >= 55
+      ? 'text-emerald-400'
+      : bufferPct >= 28
+        ? 'text-amber-400'
+        : 'text-rose-400';
   const cashColor =
     state.brokerCash >= 300
       ? 'text-emerald-400'
@@ -41,154 +42,121 @@ export function TopHud({
         : 'text-rose-400';
 
   return (
-    <header className="flex shrink-0 items-center justify-between gap-1.5 border-b border-slate-800/90 bg-[#0b1526]/95 px-2 py-1 backdrop-blur-md sm:gap-2 sm:px-3 sm:py-1.5">
-      {/* View Switcher (Touch-friendly) */}
-      <div className="flex items-center gap-1.5">
-        <div className="hidden h-7 w-7 items-center justify-center rounded-lg bg-cyan-500/15 ring-1 ring-cyan-400/30 md:flex">
-          <Anchor className="h-3.5 w-3.5 text-cyan-400" />
-        </div>
-
-        <div className="flex rounded-lg bg-slate-900/90 p-0.5 ring-1 ring-slate-700/70">
-          <button
-            onClick={() => onChangeView('map')}
-            className={`flex min-h-[32px] items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold transition touch-manipulation ${
-              activeView === 'map'
-                ? 'bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40'
-                : 'text-slate-400 active:bg-slate-800'
-            }`}
-          >
-            <MapIcon className="h-3.5 w-3.5" />
-            <span>Map</span>
-          </button>
-          <button
-            onClick={() => onChangeView('pipeline')}
-            className={`flex min-h-[32px] items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold transition touch-manipulation ${
-              activeView === 'pipeline'
-                ? 'bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40'
-                : 'text-slate-400 active:bg-slate-800'
-            }`}
-          >
-            <Layers className="h-3.5 w-3.5" />
-            <span>Buffer</span>
-          </button>
-          <button
-            onClick={() => onChangeView('feed')}
-            className={`relative flex min-h-[32px] items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold transition touch-manipulation lg:hidden ${
-              activeView === 'feed'
-                ? 'bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40'
-                : 'text-slate-400 active:bg-slate-800'
-            }`}
-          >
-            <Bell className="h-3.5 w-3.5" />
-            {state.activeDisruptions.length > 0 && (
-              <span className="font-mono-num rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white">
-                {state.activeDisruptions.length}
-              </span>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Compact Mobile-First Tactical Metrics */}
-      <div className="flex items-center gap-2 sm:gap-4">
-        <div className="flex flex-col items-center sm:items-start">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-20 flex items-start justify-between gap-2 p-2 sm:p-3">
+      {/* Top-Left Floating Stats Pill */}
+      <div className="pointer-events-auto flex items-center gap-2.5 rounded-full border border-slate-700/70 bg-slate-950/75 px-3 py-1.5 shadow-lg backdrop-blur-md sm:gap-4 sm:px-4">
+        <div className="flex items-baseline gap-1">
           <span className="text-[9px] font-semibold text-slate-400 uppercase">Cash</span>
           <span className={`font-mono-num text-xs font-bold sm:text-sm ${cashColor}`}>
             ${Math.round(state.brokerCash)}k
           </span>
         </div>
 
-        <div className="flex min-w-[64px] flex-col gap-0.5 sm:min-w-[110px]">
-          <div className="flex items-center justify-between text-[9px] font-semibold text-slate-400 uppercase">
-            <span>Buf</span>
-            <span className="font-mono-num text-slate-200">{bufferPct}%</span>
-          </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800 ring-1 ring-slate-700">
-            <div
-              className={`h-full transition-all duration-200 ${bufferBarColor}`}
-              style={{ width: `${bufferPct}%` }}
-            />
-          </div>
+        <div className="flex items-baseline gap-1">
+          <span className="text-[9px] font-semibold text-slate-400 uppercase">Buf</span>
+          <span className={`font-mono-num text-xs font-bold sm:text-sm ${bufferTextColor}`}>
+            {bufferPct}%
+          </span>
         </div>
 
-        <div className="flex flex-col items-center sm:items-start">
+        <div className="flex items-baseline gap-1">
           <span className="text-[9px] font-semibold text-slate-400 uppercase">Strikes</span>
           <span className="font-mono-num text-xs font-bold text-rose-400 sm:text-sm">
             {state.delayStrikes}/{state.maxDelayStrikes}
           </span>
         </div>
 
-        <div className="flex flex-col items-center sm:items-start">
+        <div className="flex items-baseline gap-1">
           <span className="text-[9px] font-semibold text-slate-400 uppercase">Day</span>
           <span className="font-mono-num text-xs font-bold text-slate-100 sm:text-sm">
             {Math.floor(state.day)}/{state.maxDays}
           </span>
         </div>
 
-        <div className="flex items-center gap-1 rounded-lg bg-violet-500/15 px-2 py-1 ring-1 ring-violet-400/30">
-          <Zap className="h-3.5 w-3.5 text-violet-400" />
+        <div className="flex items-center gap-1 rounded-full bg-violet-500/20 px-2 py-0.5 ring-1 ring-violet-400/40">
+          <Zap className="h-3 w-3 text-violet-300" />
           <span className="font-mono-num text-xs font-bold text-violet-200">
             {Math.floor(state.disruptionPoints)}
           </span>
         </div>
       </div>
 
-      {/* Touch-Sized Speed Controls */}
-      <div className="flex items-center gap-1">
-        <div className="flex items-center rounded-lg bg-slate-900 p-0.5 ring-1 ring-slate-700/80">
-          <button
-            onClick={() => onSetSpeed(0)}
-            title="Pause"
-            className={`min-h-[32px] min-w-[32px] rounded-md p-1.5 flex items-center justify-center transition touch-manipulation ${
-              state.speed === 0
-                ? 'bg-amber-500/25 text-amber-300 ring-1 ring-amber-400/40'
-                : 'text-slate-400 active:bg-slate-800'
-            }`}
-          >
-            <Pause className="h-3.5 w-3.5" />
-          </button>
-          <button
-            onClick={() => onSetSpeed(1)}
-            title="1x Speed"
-            className={`min-h-[32px] rounded-md px-2 py-1 text-[11px] font-semibold flex items-center gap-0.5 transition touch-manipulation ${
-              state.speed === 1
-                ? 'bg-cyan-500/25 text-cyan-300 ring-1 ring-cyan-400/40'
-                : 'text-slate-400 active:bg-slate-800'
-            }`}
-          >
-            <Play className="h-3 w-3" />
-            1x
-          </button>
-          <button
-            onClick={() => onSetSpeed(2)}
-            title="2x Speed"
-            className={`hidden min-h-[32px] rounded-md px-2 py-1 text-[11px] font-semibold sm:flex items-center gap-0.5 transition touch-manipulation ${
-              state.speed === 2
-                ? 'bg-cyan-500/25 text-cyan-300 ring-1 ring-cyan-400/40'
-                : 'text-slate-400 active:bg-slate-800'
-            }`}
-          >
-            <FastForward className="h-3 w-3" />
-            2x
-          </button>
-          <button
-            onClick={() => onSetSpeed(3)}
-            title="3x Speed"
-            className={`min-h-[32px] rounded-md px-2 py-1 text-[11px] font-semibold flex items-center gap-0.5 transition touch-manipulation ${
-              state.speed === 3
-                ? 'bg-cyan-500/25 text-cyan-300 ring-1 ring-cyan-400/40'
-                : 'text-slate-400 active:bg-slate-800'
-            }`}
-          >
-            <Activity className="h-3 w-3" />
-            3x
-          </button>
-        </div>
+      {/* Top-Right Floating Controls Pill */}
+      <div className="pointer-events-auto flex items-center gap-1.5 rounded-full border border-slate-700/70 bg-slate-950/75 p-1 shadow-lg backdrop-blur-md">
+        <button
+          onClick={() =>
+            onToggleDrawer(activeDrawer === 'pipeline' ? 'none' : 'pipeline')
+          }
+          className={`flex min-h-[30px] items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold transition touch-manipulation ${
+            activeDrawer === 'pipeline'
+              ? 'bg-cyan-500/25 text-cyan-200 ring-1 ring-cyan-400/50'
+              : 'text-slate-300 hover:bg-slate-800/80 active:bg-slate-800'
+          }`}
+        >
+          <Layers className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Buffer</span>
+        </button>
+
+        <button
+          onClick={() => onToggleDrawer(activeDrawer === 'feed' ? 'none' : 'feed')}
+          className={`relative flex min-h-[30px] items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold transition touch-manipulation ${
+            activeDrawer === 'feed'
+              ? 'bg-cyan-500/25 text-cyan-200 ring-1 ring-cyan-400/50'
+              : 'text-slate-300 hover:bg-slate-800/80 active:bg-slate-800'
+          }`}
+        >
+          <Bell className="h-3.5 w-3.5" />
+          {state.activeDisruptions.length > 0 && (
+            <span className="font-mono-num rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white">
+              {state.activeDisruptions.length}
+            </span>
+          )}
+        </button>
+
+        <div className="h-4 w-px bg-slate-700/70" />
+
+        <button
+          onClick={() => onSetSpeed(0)}
+          title="Pause"
+          className={`flex min-h-[30px] min-w-[30px] items-center justify-center rounded-full transition touch-manipulation ${
+            state.speed === 0
+              ? 'bg-amber-500/30 text-amber-300 ring-1 ring-amber-400/50'
+              : 'text-slate-300 active:bg-slate-800'
+          }`}
+        >
+          <Pause className="h-3.5 w-3.5" />
+        </button>
+
+        <button
+          onClick={() => onSetSpeed(1)}
+          title="1x Speed"
+          className={`flex min-h-[30px] items-center gap-0.5 rounded-full px-2 text-[11px] font-semibold transition touch-manipulation ${
+            state.speed === 1
+              ? 'bg-cyan-500/30 text-cyan-200 ring-1 ring-cyan-400/50'
+              : 'text-slate-300 active:bg-slate-800'
+          }`}
+        >
+          <Play className="h-3 w-3" />
+          1x
+        </button>
+
+        <button
+          onClick={() => onSetSpeed(3)}
+          title="3x Speed"
+          className={`flex min-h-[30px] items-center gap-0.5 rounded-full px-2 text-[11px] font-semibold transition touch-manipulation ${
+            state.speed === 3
+              ? 'bg-cyan-500/30 text-cyan-200 ring-1 ring-cyan-400/50'
+              : 'text-slate-300 active:bg-slate-800'
+          }`}
+        >
+          <Activity className="h-3 w-3" />
+          3x
+        </button>
 
         <button
           onClick={onReset}
           title="Restart Match"
-          className="flex min-h-[32px] min-w-[32px] items-center justify-center rounded-lg bg-slate-800/80 p-1.5 text-slate-300 ring-1 ring-slate-700 transition active:bg-slate-700 touch-manipulation"
+          className="flex min-h-[30px] min-w-[30px] items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-800 active:bg-slate-700 touch-manipulation"
         >
           <RotateCcw className="h-3.5 w-3.5" />
         </button>
