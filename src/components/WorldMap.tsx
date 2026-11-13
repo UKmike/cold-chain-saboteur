@@ -146,17 +146,20 @@ export function WorldMap({ state, selectedCard, onTargetClick }: WorldMapProps) 
               key={ship.id}
               transform={`translate(${pos.x}, ${pos.y})`}
               onClick={() => targetable && onTargetClick('shipment', ship.id)}
-              className={targetable ? 'cursor-pointer' : ''}
+              className={targetable ? 'cursor-pointer touch-manipulation' : ''}
             >
               {targetable && (
-                <circle
-                  r={15}
-                  fill="none"
-                  stroke="#38bdf8"
-                  strokeWidth={2}
-                  strokeDasharray="3 2"
-                  className="animate-hazard-pulse"
-                />
+                <>
+                  <circle r={26} fill="transparent" />
+                  <circle
+                    r={16}
+                    fill="none"
+                    stroke="#38bdf8"
+                    strokeWidth={2}
+                    strokeDasharray="3 2"
+                    className="animate-hazard-pulse"
+                  />
+                </>
               )}
               <circle
                 r={8}
@@ -187,17 +190,20 @@ export function WorldMap({ state, selectedCard, onTargetClick }: WorldMapProps) 
               key={origin.id}
               transform={`translate(${origin.pos.x}, ${origin.pos.y})`}
               onClick={() => targetable && onTargetClick('origin', origin.id)}
-              className={targetable ? 'cursor-pointer' : ''}
+              className={targetable ? 'cursor-pointer touch-manipulation' : ''}
             >
               {targetable && (
-                <circle
-                  r={24}
-                  fill="rgba(34, 211, 238, 0.14)"
-                  stroke="#22d3ee"
-                  strokeWidth={2}
-                  strokeDasharray="4 3"
-                  className="animate-hazard-pulse"
-                />
+                <>
+                  <circle r={32} fill="transparent" />
+                  <circle
+                    r={24}
+                    fill="rgba(34, 211, 238, 0.14)"
+                    stroke="#22d3ee"
+                    strokeWidth={2}
+                    strokeDasharray="4 3"
+                    className="animate-hazard-pulse"
+                  />
+                </>
               )}
               <circle
                 r={15}
@@ -227,17 +233,20 @@ export function WorldMap({ state, selectedCard, onTargetClick }: WorldMapProps) 
         <g
           transform={`translate(${HUB_POS.x}, ${HUB_POS.y})`}
           onClick={() => isTargetable('hub') && onTargetClick('hub', 'hub')}
-          className={isTargetable('hub') ? 'cursor-pointer' : ''}
+          className={isTargetable('hub') ? 'cursor-pointer touch-manipulation' : ''}
         >
           {isTargetable('hub') && (
-            <circle
-              r={32}
-              fill="rgba(245, 158, 11, 0.18)"
-              stroke="#fbbf24"
-              strokeWidth={2.2}
-              strokeDasharray="4 3"
-              className="animate-hazard-pulse"
-            />
+            <>
+              <circle r={38} fill="transparent" />
+              <circle
+                r={32}
+                fill="rgba(245, 158, 11, 0.18)"
+                stroke="#fbbf24"
+                strokeWidth={2.2}
+                strokeDasharray="4 3"
+                className="animate-hazard-pulse"
+              />
+            </>
           )}
           <circle
             r={22}
@@ -271,17 +280,20 @@ export function WorldMap({ state, selectedCard, onTargetClick }: WorldMapProps) 
               key={buyer.id}
               transform={`translate(${buyer.pos.x}, ${buyer.pos.y})`}
               onClick={() => targetable && onTargetClick('buyer', buyer.id)}
-              className={targetable ? 'cursor-pointer' : ''}
+              className={targetable ? 'cursor-pointer touch-manipulation' : ''}
             >
               {targetable && (
-                <circle
-                  r={24}
-                  fill="rgba(236, 72, 153, 0.16)"
-                  stroke="#ec4899"
-                  strokeWidth={2}
-                  strokeDasharray="4 3"
-                  className="animate-hazard-pulse"
-                />
+                <>
+                  <circle r={32} fill="transparent" />
+                  <circle
+                    r={24}
+                    fill="rgba(236, 72, 153, 0.16)"
+                    stroke="#ec4899"
+                    strokeWidth={2}
+                    strokeDasharray="4 3"
+                    className="animate-hazard-pulse"
+                  />
+                </>
               )}
               <rect
                 x={-16}

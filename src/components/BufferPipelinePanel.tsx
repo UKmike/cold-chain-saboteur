@@ -18,7 +18,7 @@ export function BufferPipelinePanel({
   const isTargetable = (t: TargetType) => armedCard?.targetType === t;
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-3 gap-2.5 overflow-hidden">
+    <div className="grid h-full min-h-0 grid-cols-1 gap-2.5 overflow-y-auto sm:grid-cols-3 sm:overflow-hidden">
       {/* Column 1: Buffer Storage Tanks */}
       <div className="flex min-h-0 flex-col rounded-xl border border-slate-800/90 bg-[#0b1526]/90 p-2.5">
         <div className="mb-2 flex items-center justify-between border-b border-slate-800 pb-1.5">

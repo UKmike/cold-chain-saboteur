@@ -3,7 +3,7 @@ import { BufferPipelinePanel } from './components/BufferPipelinePanel';
 import { DisruptionHand } from './components/DisruptionHand';
 import { EventFeed } from './components/EventFeed';
 import { GameOverModal } from './components/GameOverModal';
-import { TopHud } from './components/TopHud';
+import { ActiveView, TopHud } from './components/TopHud';
 import { WorldMap } from './components/WorldMap';
 import { createInitialGameState, DISRUPTION_CARDS } from './engine/config';
 import { playDisruptionCard, stepSimulation } from './engine/simulation';
@@ -11,7 +11,7 @@ import { CardId, GameState, TargetType } from './engine/types';
 
 export function App() {
   const [state, setState] = useState<GameState>(() => createInitialGameState());
-  const [activeView, setActiveView] = useState<'map' | 'pipeline'>('map');
+  const [activeView, setActiveView] = useState<ActiveView>('map');
   const [selectedCard, setSelectedCard] = useState<CardId | null>(null);
 
   // Real-time simulation loop (100ms ticks)
@@ -23,7 +23,7 @@ export function App() {
     return () => clearInterval(interval);
   }, [state.speed, state.status]);
 
-  // Spacebar toggles Pause / Resume
+  // Spacebar toggles Pause / Resume on keyboard devices
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.code === 'Space' && e.target === document.body) {
@@ -46,6 +46,8 @@ export function App() {
       setActiveView('pipeline');
     } else if (card.targetType === 'origin' || card.targetType === 'hub') {
       setActiveView('map');
+    } else if (activeView === 'feed') {
+      setActiveView('map');
     }
   };
 
@@ -64,7 +66,7 @@ export function App() {
   };
 
   return (
-    <div className="flex h-dvh w-screen flex-col overflow-hidden bg-[#070f1c] text-slate-100">
+    <div className="flex h-dvh w-screen select-none flex-col overflow-hidden bg-[#070f1c] text-slate-100">
       <TopHud
         state={state}
         activeView={activeView}
@@ -73,24 +75,30 @@ export function App() {
         onReset={handleReset}
       />
 
-      <main className="grid min-h-0 flex-1 grid-cols-12 gap-2.5 p-2.5">
-        <div className="col-span-9 min-h-0">
-          {activeView === 'map' ? (
+      <main className="grid min-h-0 flex-1 grid-cols-1 gap-2 p-2 lg:grid-cols-12 lg:gap-2.5 lg:p-2.5">
+        <div className="min-h-0 lg:col-span-9">
+          {activeView === 'map' && (
             <WorldMap
               state={state}
               selectedCard={selectedCard}
               onTargetClick={handleTargetClick}
             />
-          ) : (
+          )}
+          {activeView === 'pipeline' && (
             <BufferPipelinePanel
               state={state}
               selectedCard={selectedCard}
               onTargetClick={handleTargetClick}
             />
           )}
+          {activeView === 'feed' && (
+            <div className="h-full lg:hidden">
+              <EventFeed logs={state.logs} activeDisruptions={state.activeDisruptions} />
+            </div>
+          )}
         </div>
 
-        <div className="col-span-3 min-h-0">
+        <div className="hidden min-h-0 lg:col-span-3 lg:block">
           <EventFeed logs={state.logs} activeDisruptions={state.activeDisruptions} />
         </div>
       </main>
