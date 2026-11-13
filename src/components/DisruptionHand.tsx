@@ -97,7 +97,7 @@ export function DisruptionHand({
                 <div className="truncate text-[11px] font-bold text-slate-100 sm:text-xs">
                   {card.name}
                 </div>
-                <p className="mt-0.5 hidden line-clamp-2 text-[10px] leading-snug text-slate-400 sm:block">
+                <p className="mt-0.5 hidden line-clamp-2 text-[10px] leading-snug text-slate-400 lg:block">
                   {card.shortDesc}
                 </p>
               </div>

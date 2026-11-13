@@ -1,6 +1,6 @@
 import { BufferTank, DisruptionCard, EndBuyer, GameState, Origin, SpeciesId } from './types';
 
-export const HUB_POS = { x: 470, y: 205 };
+export const HUB_POS = { x: 475, y: 175 };
 
 export const ORIGINS: Origin[] = [
   {
@@ -8,7 +8,7 @@ export const ORIGINS: Origin[] = [
     name: 'Bergen Fjord',
     region: 'Norway',
     species: 'salmon',
-    pos: { x: 545, y: 120 },
+    pos: { x: 545, y: 105 },
     seaDays: 5,
     airDays: 1.5,
     seaCost: 22,
@@ -20,7 +20,7 @@ export const ORIGINS: Origin[] = [
     name: 'Dutch Harbor',
     region: 'Alaska',
     species: 'crab',
-    pos: { x: 135, y: 135 },
+    pos: { x: 135, y: 118 },
     seaDays: 7,
     airDays: 2,
     seaCost: 28,
@@ -32,7 +32,7 @@ export const ORIGINS: Origin[] = [
     name: 'Guayaquil Port',
     region: 'Ecuador',
     species: 'shrimp',
-    pos: { x: 255, y: 315 },
+    pos: { x: 255, y: 248 },
     seaDays: 6,
     airDays: 1.8,
     seaCost: 20,
@@ -44,7 +44,7 @@ export const ORIGINS: Origin[] = [
     name: 'Toyosu Terminal',
     region: 'Japan',
     species: 'tuna',
-    pos: { x: 865, y: 195 },
+    pos: { x: 865, y: 170 },
     seaDays: 8,
     airDays: 2.2,
     seaCost: 34,
@@ -96,7 +96,7 @@ export const INITIAL_BUYERS: EndBuyer[] = [
   {
     id: 'metro_grocery',
     name: 'Metro Grocery',
-    pos: { x: 325, y: 185 },
+    pos: { x: 325, y: 160 },
     demands: { salmon: 2.4, shrimp: 2.0 },
     patience: 100,
     isDelayed: false,
@@ -105,7 +105,7 @@ export const INITIAL_BUYERS: EndBuyer[] = [
   {
     id: 'harbor_sushi',
     name: 'Harbor Sushi',
-    pos: { x: 660, y: 245 },
+    pos: { x: 660, y: 205 },
     demands: { tuna: 1.8, salmon: 1.4 },
     patience: 100,
     isDelayed: false,
@@ -114,7 +114,7 @@ export const INITIAL_BUYERS: EndBuyer[] = [
   {
     id: 'coastal_grill',
     name: 'Coastal Grill',
-    pos: { x: 595, y: 315 },
+    pos: { x: 585, y: 252 },
     demands: { crab: 1.6, shrimp: 1.5 },
     patience: 100,
     isDelayed: false,
